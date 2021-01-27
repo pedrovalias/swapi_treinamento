@@ -14,7 +14,7 @@ module.exports = {
   moduleNameMapper: {
     'server/(.*)': '<rootDir>/src/$1',
   },
-  reporters: ['default', ['jest-junit', { output: './build/test-results/TESTS-results-jest.xml' }]],
+  reporters: ['default', ['jest-junit', { output: '<rootDir>/build/test-results/TESTS-results-jest.xml' }]],
   testResultsProcessor: 'jest-sonar-reporter',
   testPathIgnorePatterns: ['<rootDir>/node_modules/'],
   setupFiles: [

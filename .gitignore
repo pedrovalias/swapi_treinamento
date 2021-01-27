@@ -1,1 +1,4 @@
 node_modules/
+build/
+junit.xml
+test-report*.xml
