@@ -1,4 +1,4 @@
-import { Endpoint, Handler, Install } from '../setup/services';
+import { Endpoint, Handler, Install } from '../setup';
 import { findPlanetByIdUsecase } from '../usecases/find-planet-by-id.usecase';
 import { EndpointRequest } from './find-planet-by-id.types';
 

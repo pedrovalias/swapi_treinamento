@@ -1,5 +1,5 @@
 import { Planet as IntegrationPlanet } from '../../repositories/integrations/dtos/planet.dto.swapi';
-import { isEnabled } from '../../setup/feature-flags';
+import { isEnabled } from '../../setup';
 import { Planet as ModelPlanet } from '../models/planet.model';
 import { mapClimatesFromString } from './climate.mapper';
 
@@ -20,7 +20,7 @@ const resolveId = (url: string): string => {
 export const mapPlanetFromIntegration = (dto: IntegrationPlanet): ModelPlanet => {
   const { climate, name, population, diameter, created, edited, url, ...fields } = dto;
   // console.info(`Todos os outros campos não mapeados do planeta com id ${id} => `, fields)
-  return {
+  return Object.freeze({
     climate: mapClimatesFromString(climate),
     name,
     population: resolvePopulationOrDiameter(population),
@@ -28,5 +28,5 @@ export const mapPlanetFromIntegration = (dto: IntegrationPlanet): ModelPlanet =>
     created,
     edited,
     id: resolveId(url),
-  };
+  });
 };

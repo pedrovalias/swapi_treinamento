@@ -5,6 +5,6 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: MongoDByduqs!
-      MONGO_INITDB_DATABASE: auraEntregas
+      MONGO_INITDB_DATABASE: starwars
     ports:
       - '27017:27017'

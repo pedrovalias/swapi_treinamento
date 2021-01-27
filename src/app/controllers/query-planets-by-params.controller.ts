@@ -1,4 +1,4 @@
-import { Endpoint, Handler, Install } from '../setup/services';
+import { Endpoint, Handler, Install } from '../setup';
 import { mapClimatesFromString } from '../usecases/mappers/climate.mapper';
 import { queryPlanetsByParamsUsecase } from '../usecases/query-planets-by-params.usercase';
 import { EndpointRequest } from './query-planets-by-params.types';

@@ -1,10 +1,17 @@
 import { queryPlanetsByPageItegration } from '../repositories/integrations/query-planets-by-page.integration.swapi';
+import { savePlanetsStore } from '../repositories/stores/save-planets.store.mongo';
+import { isEnabled } from '../setup';
 import { mapPlanetFromIntegration } from './mappers/planet.mapper';
 import { Planet } from './models/planet.model';
 import { Input, Usecase } from './query-planets-by-params.types';
 
-const queryPersistedPlanets = () => {};
-const persistPlanets = () => {};
+const queryPersistedPlanets = async (): Promise<Planet[]> => {
+  return [];
+};
+
+const persistPlanets = async ({ planets }: { planets: Planet[] }): Promise<void> => {
+  await savePlanetsStore({ planets });
+};
 
 const queryPlanetsFromIntegration = async (): Promise<Planet[]> => {
   let continueQuerying = true;
@@ -38,6 +45,11 @@ const filterPlanets = ({ planets, filters: { climate, name } }: { planets: Plane
 };
 
 export const queryPlanetsByParamsUsecase: Usecase = async ({ name, climate }) => {
+  if (isEnabled('estoriaB')) {
+    const planets: Planet[] = await queryPlanetsFromIntegration();
+    await persistPlanets({ planets: [...planets.map((p) => ({ ...p }))] });
+    return planets;
+  }
   let result: Planet[] = await queryPlanetsFromIntegration();
   result = filterPlanets({ planets: result, filters: { name, climate } });
   return result;
