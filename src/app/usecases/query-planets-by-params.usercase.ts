@@ -6,8 +6,18 @@ import { Input, Usecase } from './query-planets-by-params.types';
 const queryPersistedPlanets = () => {};
 const persistPlanets = () => {};
 
-const queryPlanetsFromIntegration = (input: { filters: Input }): Planet[] => {
-  return [];
+const queryPlanetsFromIntegration = async (): Promise<Planet[]> => {
+  let continueQuerying = true;
+  let page = 1;
+  let result: Planet[] = [];
+  while (continueQuerying) {
+    const { planets, hasNext } = await queryPlanetsByPageItegration({ page });
+    continueQuerying = hasNext;
+    page++;
+    result = [...result, ...planets.map((planet) => mapPlanetFromIntegration(planet))];
+  }
+
+  return result;
 };
 
 const filterPlanets = ({ planets, filters: { climate, name } }: { planets: Planet[]; filters: Input }): Planet[] => {
@@ -28,16 +38,7 @@ const filterPlanets = ({ planets, filters: { climate, name } }: { planets: Plane
 };
 
 export const queryPlanetsByParamsUsecase: Usecase = async ({ name, climate }) => {
-  let continueQuerying = true;
-  let page = 1;
-  let result: Planet[] = [];
-  while (continueQuerying) {
-    const { planets, hasNext } = await queryPlanetsByPageItegration({ page });
-    continueQuerying = hasNext;
-    page++;
-    result = [...result, ...planets.map((planet) => mapPlanetFromIntegration(planet))];
-  }
-
+  let result: Planet[] = await queryPlanetsFromIntegration();
   result = filterPlanets({ planets: result, filters: { name, climate } });
   return result;
 };
